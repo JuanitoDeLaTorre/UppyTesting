@@ -21,12 +21,13 @@ const uppy = new Uppy({
 });
 uppy.use(Dashboard, { inline: true, target: "#uppy" });
 uppy.use(XHRUpload, {
-  endpoint: "http://localhost:3030/image",
+  endpoint: "https://uppyserver.onrender.com/image",
   fieldName: "photo",
   formData: true,
 });
 
 //fires after the user selects the file for upload
+//apply increasing compression levels for larger images, none for smaller (< 1MB)
 uppy.on("file-added", (file) => {
   if (file.data.size > 1000000 && file.data.size < 3000000) {
     console.log("Light Compression");
