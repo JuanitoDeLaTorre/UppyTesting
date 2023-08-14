@@ -21,7 +21,7 @@ const uppy = new Uppy({
 });
 uppy.use(Dashboard, { inline: true, target: "#uppy" });
 uppy.use(XHRUpload, {
-  endpoint: "https://uppyserver.onrender.com/image",
+  endpoint: "http://localhost:3030/image",
   fieldName: "photo",
   formData: true,
 });
@@ -38,5 +38,23 @@ uppy.on("file-added", (file) => {
   } else if (file.data.size > 10000000) {
     console.log("Aggressive Compression");
     uppy.use(Compressor, { quality: 0.2 });
+  }
+});
+
+document.querySelector("#form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  let value = document.querySelector("#name").value;
+  let name = "name";
+
+  try {
+    const send = await fetch("http://localhost:3030/form", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: value }),
+    });
+  } catch (err) {
+    console.log(err);
   }
 });
